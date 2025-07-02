@@ -10,8 +10,9 @@ wheels/
 .venv
 
 # datasets
-.BlendedMVS/
-.input/
-.output/
-.roughplastic/
-.SampleSet/
+BlendedMVS/
+input/
+output/
+roughplastic/
+SampleSet/
+Reconstruction/
