@@ -101,7 +101,7 @@ class SAM2Segmenter:
         checkpoint: Optional[str] = None, 
         mode: str = "auto", 
         config_path: Optional[str] = None,
-        params = None,
+        params: Dict = {},
     ):
         """
         初始化SAM2分割器
@@ -118,6 +118,8 @@ class SAM2Segmenter:
         self.checkpoint = checkpoint
         self.config_path = config_path
         self.mode = mode
+        self.params = params
+
 
         if mode == 'auto':
             self.mask_generator = self.init_automatic_mask_generator()
@@ -127,7 +129,6 @@ class SAM2Segmenter:
             print(f"[INFO] SAM2 Prompt Mask Generator loaded successfully on {device}")
         else:
             raise ValueError(f"Invalid segmentation mode: {mode}")
-        
         
     def init_automatic_mask_generator(self):
         """
@@ -142,12 +143,12 @@ class SAM2Segmenter:
         # 初始化自动掩码生成器
         return SAM2AutomaticMaskGenerator(
             predictor,
-            points_per_side=32,
-            pred_iou_thresh=0.86,
-            stability_score_thresh=0.92,
-            crop_n_layers=1,
-            crop_n_points_downscale_factor=2,
-            min_mask_region_area=100,
+            points_per_side=self.params.get('points_per_side', 32),
+            pred_iou_thresh=self.params.get('pred_iou_thresh', 0.86),
+            stability_score_thresh=self.params.get('stability_score_thresh', 0.92),
+            crop_n_layers=self.params.get('crop_n_layers', 1),
+            crop_n_points_downscale_factor=self.params.get('crop_n_points_downscale_factor', 2),
+            min_mask_region_area=self.params.get('min_mask_region_area', 100),
         )
 
     def init_prompt_mask_generator(self):
@@ -317,6 +318,16 @@ def main():
     colmap = config.get('colmap_bin', 'colmap')
     openmvs_bin = config.get('openmvs_bin', '')
     force = args.force or config.get('force', False)
+
+    # 设置默认参数
+    default_params = {
+        "points_per_side" : 32,
+        "pred_iou_thresh" : 0.86,
+        "stability_score_thresh" : 0.92,
+        "crop_n_layers" : 1,
+        "crop_n_points_downscale_factor" : 2,
+        "min_mask_region_area" : 100,
+    }
     
     # 检查点文件
     checkpoint_path = norm_path(os.path.join(workspace, 'segment_recon_checkpoints.json'))
@@ -330,7 +341,7 @@ def main():
             checkpoint=config.get('sam2_checkpoint'),
             mode=config.get('segmentation_mode', 'auto'),
             config_path=config.get('sam2_config'),
-            params=config.get('segmentation_params'),
+            params=config.get('segmentation_params', default_params),
         )
     
     # 遍历所有场景进行分割

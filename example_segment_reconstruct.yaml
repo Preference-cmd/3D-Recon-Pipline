@@ -6,22 +6,14 @@
 workspace: ./Reconstruction         # 工作目录（包含所有场景子目录）
 
 # SAM2配置
-sam2_model: hiera_b+               # SAM2模型类型: hiera_t, hiera_s, hiera_b+, hiera_l
-device: cuda                       # 推理设备: cuda, cpu
-sam2_checkpoint: checkpoints/sam2.1_hiera_base_plus.pt   # SAM2模型权重路径
-sam2_config: configs/sam2.1/sam2.1_hiera_b+.yaml             # SAM2模型配置文件路径
+sam2_model:         # SAM2模型类型: hiera_t, hiera_s, hiera_b+, hiera_l
+device: cuda        # 推理设备: cuda, cpu, ROCm, MPS
+sam2_checkpoint:    # SAM2模型权重路径
+sam2_config:        # SAM2模型配置文件路径
 
 # 强制分割参数
 force: false                       # true时强制重新分割，覆盖已有masks
 
-# 模型映射（自动生成，无需手动配置）
-model_map:
-  0: 5a3ca9cb270f0e3f14d0eddb
-  1: 5a3cb4e4270f0e3f14d12f43
-  2: 5a6464143d809f1d8208c43c
-  3: 5a7d3db14989e929563eb153
-  4: 5c34300a73a8df509add216d
-  5: 5c34529873a8df509ae57b58
 
 # 分割模式配置
 segmentation_mode: auto  # 可选: auto（自动分割）, prompt（提示分割）
@@ -35,6 +27,4 @@ segmentation_params:
   crop_n_points_downscale_factor: 2  # 裁剪点下采样因子
   min_mask_region_area: 100       # 最小掩码区域面积
 
-# 掩码文件说明：
-# masks/ 目录结构需与 images/ 完全一致，掩码文件名为原图名+.png（如 012.jpg -> 012.jpg.png），为灰度PNG，0=无效，255=有效。
-# COLMAP 3.9+ 用 --ImageReader.mask_path 指向 masks 根目录即可自动匹配。
+
