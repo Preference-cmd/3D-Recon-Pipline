@@ -1,0 +1,10 @@
+   root: BlendedMVS
+   output: ./Reconstruction
+   scenes:
+     - 5a3ca9cb270f0e3f14d0eddb
+     - 5a3cb4e4270f0e3f14d12f43
+     - 5a7d3db14989e929563eb153
+     - 5a6464143d809f1d8208c43c
+     - 5c34529873a8df509ae57b58
+     - 5c34300a73a8df509add216d
+   copy_masked: false

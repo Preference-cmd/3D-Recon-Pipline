@@ -1,0 +1,9 @@
+# 支持单视频和批量处理的统一配置
+# 单视频：video_path
+# 批量：input_dir
+video_path: ../input/videos  # 单视频路径（可选）
+input_dir: ../input/videos  # 批量处理目录（可选）
+output_dir: ../output/frames
+frame_interval: 10
+mode: interval
+num_frames: 100
